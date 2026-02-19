@@ -54,7 +54,6 @@ const StatusDot = styled('span')`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: ${({ isFetching }: { isFetching: boolean }) => (isFetching ? '#ffbf00' : '#4caf50')};
   margin-right: 8px;
   display: inline-block;
   flex-shrink: 0;
@@ -123,7 +122,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ keys, cacheData, mutations, is
           filteredKeys.map((key) => {
             const data = cacheData[key];
             const isFetching = data?.isValidating || data?.isLoading;
-            const statusColor = isFetching ? '#61dafb' : '#ffbf00';
+            const hasError = !!data?.error;
+            const statusColor = isFetching ? '#61dafb' : hasError ? '#f44336' : '#4caf50';
 
             return (
               <ListItem 
@@ -132,7 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ keys, cacheData, mutations, is
                 onClick={() => onSelect(key)}
                 title={key}
               >
-                <StatusDot isFetching={!!isFetching} style={{ background: statusColor }} />
+                <StatusDot style={{ background: statusColor }} />
                 {key}
               </ListItem>
             );
@@ -153,7 +153,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ keys, cacheData, mutations, is
                  title={mutation.status}
                  style={{ opacity: mutation.status === 'pending' ? 0.7 : 1 }}
               >
-                 <StatusDot isFetching={mutation.status === 'pending'} style={{ 
+                 <StatusDot style={{
                    background: mutation.status === 'success' ? '#4caf50' : 
                                mutation.status === 'error' ? '#f44336' : '#61dafb' 
                  }} />

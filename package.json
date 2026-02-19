@@ -1,5 +1,5 @@
 {
-  "name": "swr-devtools",
+  "name": "swr-devtools-community",
   "version": "0.1.0",
   "description": "Developer tools for SWR",
   "main": "dist/index.cjs.js",

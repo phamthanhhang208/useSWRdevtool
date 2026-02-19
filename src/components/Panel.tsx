@@ -82,7 +82,7 @@ export const Panel: React.FC<PanelProps> = ({ cacheData, mutate, cache, mutation
   
   // Resizable state
   const [panelHeight, setPanelHeight] = useState(400);
-  const [sidebarWidth, setSidebarWidth] = useState(300);
+  const [sidebarWidth, setSidebarWidth] = useState(() => Math.round(window.innerWidth / 3));
   const [isResizingHeight, setIsResizingHeight] = useState(false);
   const [isResizingSidebar, setIsResizingSidebar] = useState(false);
 

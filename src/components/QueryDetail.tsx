@@ -99,10 +99,29 @@ interface QueryDetailProps {
 }
 
 export const QueryDetail: React.FC<QueryDetailProps> = ({ queryKey, data, onMutate, onDelete }) => {
-  // Infer status
-  const isFetching = data?.isValidating || data?.isLoading;
-  const statusColor = isFetching ? '#61dafb' : '#ffbf00'; // Blue (active) or Orange (stale)
-  const statusText = isFetching ? 'FETCHING' : 'STALE';
+  // Infer status with proper SWR state differentiation
+  const hasError = !!data?.error;
+  const hasData = data?.data !== undefined;
+
+  let statusText: string;
+  let statusColor: string;
+
+  if (data?.isLoading) {
+    statusText = 'LOADING';
+    statusColor = '#61dafb';
+  } else if (data?.isValidating) {
+    statusText = 'REVALIDATING';
+    statusColor = '#a78bfa';
+  } else if (hasError) {
+    statusText = 'ERROR';
+    statusColor = '#f44336';
+  } else if (hasData) {
+    statusText = 'FRESH';
+    statusColor = '#4caf50';
+  } else {
+    statusText = 'IDLE';
+    statusColor = '#888';
+  }
 
   return (
     <Container>
@@ -120,10 +139,26 @@ export const QueryDetail: React.FC<QueryDetailProps> = ({ queryKey, data, onMuta
           <KeyTag>{queryKey}</KeyTag>
         </Section>
         
+        {hasError && (
+          <Section>
+            <SectionTitle>Error</SectionTitle>
+            <div style={{ background: '#2a0a0a', padding: '12px', borderRadius: '4px', border: '1px solid #5a1a1a', color: '#f44336', fontFamily: 'monospace', fontSize: 12, wordBreak: 'break-all' }}>
+              {data.error instanceof Error ? data.error.message : String(data.error)}
+            </div>
+          </Section>
+        )}
+
         <Section>
-          <SectionTitle>Data Explorer</SectionTitle>
+          <SectionTitle>Data</SectionTitle>
           <div style={{ background: '#111', padding: '12px', borderRadius: '4px', border: '1px solid #333' }}>
-             <JsonViewer data={data} initialOpen={true} />
+            <JsonViewer data={data?.data} initialOpen={true} />
+          </div>
+        </Section>
+
+        <Section>
+          <SectionTitle>SWR State</SectionTitle>
+          <div style={{ background: '#111', padding: '12px', borderRadius: '4px', border: '1px solid #333' }}>
+            <JsonViewer data={{ isLoading: data?.isLoading, isValidating: data?.isValidating, error: data?.error }} initialOpen={true} />
           </div>
         </Section>
       </Content>

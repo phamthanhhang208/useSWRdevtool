@@ -30,7 +30,7 @@ export function useSWRDevTools() {
       setCacheData(allData);
     };
 
-    const intervalId = setInterval(updateCacheData, 1000);
+    const intervalId = setInterval(updateCacheData, 500);
     updateCacheData();
 
     return () => clearInterval(intervalId);
