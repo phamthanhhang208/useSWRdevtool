@@ -1,80 +1,84 @@
 # SWR DevTools
 
-A lightweight, developer-friendly debugging tool for [SWR](https://swr.vercel.app/) (stale-while-revalidate) data fetching in React applications. It provides a visual interface to inspect cache data, monitor mutations, and trigger revalidations.
-
-![SWR DevTools](https://github.com/phamthanhhang208/useSWRdevtool/assets/placeholder.png)
+A lightweight, developer-friendly debugging tool for [SWR](https://swr.vercel.app/) in React applications. Inspect cache data, monitor query status, track mutations, and trigger revalidations — all from a floating panel in your app.
 
 ## Features
 
--   🔍 **Cache Inspection**: View all cached SWR keys and their current data in real-time.
--   🛠 **Mutation Monitoring**: Track in-flight mutations and see their status (requires middleware).
--   🖱 **Draggable Interface**: A floating button that can be moved anywhere on the screen to avoid obstructing your UI.
--   ⚡ **Lightweight**: Optimized and minified for minimal impact on your bundle size.
--   🎨 **Dark Mode**: sleek, dark-themed UI that fits into modern development environments.
+- **Cache Inspection** — View all active SWR keys and their cached data in real-time
+- **Query Status** — See accurate per-query states: `LOADING`, `REVALIDATING`, `FRESH`, `ERROR`, or `IDLE`
+- **Error Display** — Errors are surfaced inline with the full error message
+- **Mutation Monitoring** — Track in-flight mutations with status history (requires middleware)
+- **Refetch / Invalidate** — Trigger revalidation for any query from the panel
+- **Remove from Cache** — Delete individual cache entries on demand
+- **Draggable Button** — Move the floating trigger anywhere on screen
+- **Resizable Panel** — Drag to resize both the panel height and the sidebar width
+- **Dark UI** — Minimal dark-themed interface that stays out of your way
 
 ## Installation
 
 ```bash
-npm install swr-devtools
+npm install swr-devtools-community
 # or
-yarn add swr-devtools
+yarn add swr-devtools-community
 # or
-pnpm add swr-devtools
+pnpm add swr-devtools-community
 ```
 
 ## Usage
 
-### Basic Usage
+### Basic
 
-Simply render the `SWRDevTools` component anywhere in your app (usually at the root level).
+Render `<SWRDevTools />` anywhere in your app — typically at the root level, outside your main content.
 
 ```tsx
-import { SWRDevTools } from 'swr-devtools';
+import { SWRDevTools } from 'swr-devtools-community';
 
 function App() {
   return (
     <>
       <YourAppContent />
-      <SWRDevTools />
+      {process.env.NODE_ENV === 'development' && <SWRDevTools />}
     </>
   );
 }
 ```
 
-### Advanced Usage (With Mutation Tracking)
+### With Mutation Tracking
 
-To enable mutation tracking, you need to use the `swrDevToolsMiddleware` in your global SWR configuration.
+Add `swrDevToolsMiddleware` to your `SWRConfig` to enable the Mutations tab.
 
 ```tsx
 import { SWRConfig } from 'swr';
-import { SWRDevTools, swrDevToolsMiddleware } from 'swr-devtools';
+import { SWRDevTools, swrDevToolsMiddleware } from 'swr-devtools-community';
 
 function App() {
   return (
     <SWRConfig value={{ use: [swrDevToolsMiddleware] }}>
       <YourAppContent />
-      <SWRDevTools />
+      {process.env.NODE_ENV === 'development' && <SWRDevTools />}
     </SWRConfig>
   );
 }
 ```
 
+## Query Status Reference
+
+| Status | Color | Meaning |
+|---|---|---|
+| `LOADING` | Blue | First fetch in progress, no cached data yet |
+| `REVALIDATING` | Purple | Has cached data, re-fetching in background |
+| `FRESH` | Green | Data loaded, not currently fetching |
+| `ERROR` | Red | Last fetch failed |
+| `IDLE` | Gray | No data, not fetching |
+
 ## Development
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/phamthanhhang208/useSWRdevtool.git
-    ```
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-3.  Run the example app:
-    ```bash
-    cd example
-    npm install
-    npm run dev
-    ```
+```bash
+git clone https://github.com/phamthanhhang208/useSWRdevtool.git
+cd useSWRdevtool
+npm install
+npm run build
+```
 
 ## License
 
