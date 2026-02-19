@@ -13,7 +13,8 @@
     "dev": "vite",
     "build": "vite build && tsc --emitDeclarationOnly --declaration --noEmit false --outDir dist",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "release": "npm run build && npm publish"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
