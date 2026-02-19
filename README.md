@@ -2,6 +2,8 @@
 
 A lightweight, developer-friendly debugging tool for [SWR](https://swr.vercel.app/) in React applications. Inspect cache data, monitor query status, track mutations, and trigger revalidations — all from a floating panel in your app.
 
+View [DEMO](https://use-swr-devtools-community-demo.vercel.app/) here
+
 ## Features
 
 - **Cache Inspection** — View all active SWR keys and their cached data in real-time
